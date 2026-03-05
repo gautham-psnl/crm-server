@@ -1,6 +1,12 @@
 node_modules
-# Keep environment variables out of version control
+dist
 .env
-
+.env.*
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.vscode/
+.idea/
 /generated/prisma
-/dist
