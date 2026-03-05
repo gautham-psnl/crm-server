@@ -20,8 +20,8 @@ export declare class CustomerController {
             createdAt: Date;
             statusId: string;
             amount: number;
-            customerId: string;
             quotationId: string;
+            customerId: string;
         })[];
     } & {
         id: string;
@@ -56,8 +56,8 @@ export declare class CustomerController {
             createdAt: Date;
             statusId: string;
             amount: number;
-            customerId: string;
             quotationId: string;
+            customerId: string;
         })[];
     } & {
         id: string;

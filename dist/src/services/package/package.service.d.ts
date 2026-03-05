@@ -12,8 +12,8 @@ export declare class PackageService {
         name: string;
         createdAt: Date;
         isActive: boolean;
-        duration: number;
         destination: string;
+        duration: number;
         price: number;
         hotelDetails: Prisma.JsonValue;
         dayWisePlan: Prisma.JsonValue;
@@ -25,8 +25,8 @@ export declare class PackageService {
         name: string;
         createdAt: Date;
         isActive: boolean;
-        duration: number;
         destination: string;
+        duration: number;
         price: number;
         hotelDetails: Prisma.JsonValue;
         dayWisePlan: Prisma.JsonValue;
@@ -38,8 +38,8 @@ export declare class PackageService {
         name: string;
         createdAt: Date;
         isActive: boolean;
-        duration: number;
         destination: string;
+        duration: number;
         price: number;
         hotelDetails: Prisma.JsonValue;
         dayWisePlan: Prisma.JsonValue;
@@ -51,8 +51,8 @@ export declare class PackageService {
         name: string;
         createdAt: Date;
         isActive: boolean;
-        duration: number;
         destination: string;
+        duration: number;
         price: number;
         hotelDetails: Prisma.JsonValue;
         dayWisePlan: Prisma.JsonValue;
@@ -64,8 +64,8 @@ export declare class PackageService {
         name: string;
         createdAt: Date;
         isActive: boolean;
-        duration: number;
         destination: string;
+        duration: number;
         price: number;
         hotelDetails: Prisma.JsonValue;
         dayWisePlan: Prisma.JsonValue;

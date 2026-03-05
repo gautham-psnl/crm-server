@@ -45,7 +45,7 @@ export class PaymentService {
         });
 
         if (invoice) {
-            const totalPaid = invoice.payments.reduce((sum, p) => sum + p.amount, 0);
+            const totalPaid = invoice.payments.reduce((sum: number, p: any) => sum + p.amount, 0);
 
             if (totalPaid >= invoice.amount) {
                 const paidStatus = await this.prisma.moduleStatus.findFirst({

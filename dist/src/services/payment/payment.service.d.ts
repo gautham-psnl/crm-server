@@ -9,8 +9,8 @@ export declare class PaymentService {
         invoice: {
             customer: {
                 id: string;
-                name: string;
                 createdAt: Date;
+                name: string;
                 email: string | null;
                 phone: string;
                 source: string;
@@ -18,25 +18,25 @@ export declare class PaymentService {
             };
         } & {
             id: string;
-            createdAt: Date;
-            statusId: string;
             amount: number;
-            customerId: string;
+            createdAt: Date;
             quotationId: string;
+            customerId: string;
+            statusId: string;
         };
     } & {
         id: string;
-        createdAt: Date;
-        amount: number;
         invoiceId: string;
+        amount: number;
         paidAt: Date | null;
+        createdAt: Date;
     })[]>;
     findById(id: string): Promise<{
         invoice: {
             customer: {
                 id: string;
-                name: string;
                 createdAt: Date;
+                name: string;
                 email: string | null;
                 phone: string;
                 source: string;
@@ -44,33 +44,33 @@ export declare class PaymentService {
             };
         } & {
             id: string;
-            createdAt: Date;
-            statusId: string;
             amount: number;
-            customerId: string;
+            createdAt: Date;
             quotationId: string;
+            customerId: string;
+            statusId: string;
         };
     } & {
         id: string;
-        createdAt: Date;
-        amount: number;
         invoiceId: string;
+        amount: number;
         paidAt: Date | null;
+        createdAt: Date;
     }>;
     create(dto: CreatePaymentInput): Promise<{
         invoice: {
             id: string;
-            createdAt: Date;
-            statusId: string;
             amount: number;
-            customerId: string;
+            createdAt: Date;
             quotationId: string;
+            customerId: string;
+            statusId: string;
         };
     } & {
         id: string;
-        createdAt: Date;
-        amount: number;
         invoiceId: string;
+        amount: number;
         paidAt: Date | null;
+        createdAt: Date;
     }>;
 }

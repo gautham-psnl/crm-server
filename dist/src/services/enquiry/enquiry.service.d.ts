@@ -37,9 +37,9 @@ export declare class EnquiryService {
         phone: string;
         destination: string | null;
         budget: number | null;
+        statusId: string;
         sourceId: string;
         assignedToId: string | null;
-        statusId: string;
     })[]>;
     findById(id: string): Promise<{
         status: {
@@ -71,9 +71,9 @@ export declare class EnquiryService {
         phone: string;
         destination: string | null;
         budget: number | null;
+        statusId: string;
         sourceId: string;
         assignedToId: string | null;
-        statusId: string;
     }>;
     create(dto: CreateEnquiryInput): Promise<{
         status: {
@@ -100,9 +100,9 @@ export declare class EnquiryService {
         phone: string;
         destination: string | null;
         budget: number | null;
+        statusId: string;
         sourceId: string;
         assignedToId: string | null;
-        statusId: string;
     }>;
     update(id: string, dto: UpdateEnquiryInput): Promise<{
         status: {
@@ -129,9 +129,9 @@ export declare class EnquiryService {
         phone: string;
         destination: string | null;
         budget: number | null;
+        statusId: string;
         sourceId: string;
         assignedToId: string | null;
-        statusId: string;
     }>;
     remove(id: string): Promise<{
         id: string;
@@ -141,8 +141,8 @@ export declare class EnquiryService {
         phone: string;
         destination: string | null;
         budget: number | null;
+        statusId: string;
         sourceId: string;
         assignedToId: string | null;
-        statusId: string;
     }>;
 }

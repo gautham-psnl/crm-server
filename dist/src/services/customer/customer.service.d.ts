@@ -23,8 +23,8 @@ export declare class CustomerService {
             createdAt: Date;
             statusId: string;
             amount: number;
-            customerId: string;
             quotationId: string;
+            customerId: string;
         })[];
     } & {
         id: string;
@@ -59,8 +59,8 @@ export declare class CustomerService {
             createdAt: Date;
             statusId: string;
             amount: number;
-            customerId: string;
             quotationId: string;
+            customerId: string;
         })[];
     } & {
         id: string;

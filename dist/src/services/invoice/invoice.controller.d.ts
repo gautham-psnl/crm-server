@@ -35,8 +35,8 @@ export declare class InvoiceController {
         createdAt: Date;
         statusId: string;
         amount: number;
-        customerId: string;
         quotationId: string;
+        customerId: string;
     })[]>;
     findById(id: string): Promise<{
         customer: {
@@ -70,8 +70,8 @@ export declare class InvoiceController {
         createdAt: Date;
         statusId: string;
         amount: number;
-        customerId: string;
         quotationId: string;
+        customerId: string;
     }>;
     create(dto: CreateInvoiceInput): Promise<{
         customer: {
@@ -98,8 +98,8 @@ export declare class InvoiceController {
         createdAt: Date;
         statusId: string;
         amount: number;
-        customerId: string;
         quotationId: string;
+        customerId: string;
     }>;
     update(id: string, dto: UpdateInvoiceInput): Promise<{
         customer: {
@@ -126,7 +126,7 @@ export declare class InvoiceController {
         createdAt: Date;
         statusId: string;
         amount: number;
-        customerId: string;
         quotationId: string;
+        customerId: string;
     }>;
 }

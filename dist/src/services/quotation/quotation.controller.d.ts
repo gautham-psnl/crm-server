@@ -13,9 +13,9 @@ export declare class QuotationController {
                 phone: string;
                 destination: string | null;
                 budget: number | null;
+                statusId: string;
                 sourceId: string;
                 assignedToId: string | null;
-                statusId: string;
             };
         } & {
             id: string;
@@ -55,9 +55,9 @@ export declare class QuotationController {
                 phone: string;
                 destination: string | null;
                 budget: number | null;
+                statusId: string;
                 sourceId: string;
                 assignedToId: string | null;
-                statusId: string;
             };
         } & {
             id: string;

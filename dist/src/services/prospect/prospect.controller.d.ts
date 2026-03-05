@@ -18,8 +18,8 @@ export declare class ProspectController {
         } & {
             id: string;
             createdAt: Date;
-            updatedAt: Date;
             statusId: string;
+            updatedAt: Date;
             ownerId: string;
             prospectId: string;
             expectedValue: number;
@@ -34,9 +34,9 @@ export declare class ProspectController {
             phone: string;
             destination: string | null;
             budget: number | null;
+            statusId: string;
             sourceId: string;
             assignedToId: string | null;
-            statusId: string;
         };
         status: {
             id: string;
@@ -75,8 +75,8 @@ export declare class ProspectController {
         } & {
             id: string;
             createdAt: Date;
-            updatedAt: Date;
             statusId: string;
+            updatedAt: Date;
             ownerId: string;
             prospectId: string;
             expectedValue: number;
@@ -91,9 +91,9 @@ export declare class ProspectController {
             phone: string;
             destination: string | null;
             budget: number | null;
+            statusId: string;
             sourceId: string;
             assignedToId: string | null;
-            statusId: string;
         };
         status: {
             id: string;
@@ -126,9 +126,9 @@ export declare class ProspectController {
             phone: string;
             destination: string | null;
             budget: number | null;
+            statusId: string;
             sourceId: string;
             assignedToId: string | null;
-            statusId: string;
         };
         status: {
             id: string;
@@ -168,12 +168,12 @@ export declare class ProspectController {
             name: string;
             createdAt: Date;
             email: string;
-            updatedAt: Date;
             emailVerified: boolean;
             image: string | null;
+            updatedAt: Date;
             role: string | null;
-            banReason: string | null;
             banned: boolean | null;
+            banReason: string | null;
             banExpires: Date | null;
         };
     } & {

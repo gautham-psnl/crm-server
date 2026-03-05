@@ -8,8 +8,8 @@ export declare class PackageController {
         name: string;
         createdAt: Date;
         isActive: boolean;
-        duration: number;
         destination: string;
+        duration: number;
         price: number;
         hotelDetails: import("@prisma/client/runtime/client").JsonValue;
         dayWisePlan: import("@prisma/client/runtime/client").JsonValue;
@@ -21,8 +21,8 @@ export declare class PackageController {
         name: string;
         createdAt: Date;
         isActive: boolean;
-        duration: number;
         destination: string;
+        duration: number;
         price: number;
         hotelDetails: import("@prisma/client/runtime/client").JsonValue;
         dayWisePlan: import("@prisma/client/runtime/client").JsonValue;
@@ -34,8 +34,8 @@ export declare class PackageController {
         name: string;
         createdAt: Date;
         isActive: boolean;
-        duration: number;
         destination: string;
+        duration: number;
         price: number;
         hotelDetails: import("@prisma/client/runtime/client").JsonValue;
         dayWisePlan: import("@prisma/client/runtime/client").JsonValue;
@@ -47,8 +47,8 @@ export declare class PackageController {
         name: string;
         createdAt: Date;
         isActive: boolean;
-        duration: number;
         destination: string;
+        duration: number;
         price: number;
         hotelDetails: import("@prisma/client/runtime/client").JsonValue;
         dayWisePlan: import("@prisma/client/runtime/client").JsonValue;
@@ -60,8 +60,8 @@ export declare class PackageController {
         name: string;
         createdAt: Date;
         isActive: boolean;
-        duration: number;
         destination: string;
+        duration: number;
         price: number;
         hotelDetails: import("@prisma/client/runtime/client").JsonValue;
         dayWisePlan: import("@prisma/client/runtime/client").JsonValue;
