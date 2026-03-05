@@ -1,0 +1,395 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+//////////////////////////////////////////////////////
+// AUTHENTICATION & AUTHORIZATION (BETTER-AUTH)
+// Better Auth will generate standard User, Session, Account tables automatically.
+// The `admin` plugin will add `role` and `ban` fields to the User.
+// We DO NOT define custom Team/Permission tables since Better Auth AC handles it via the `admin` plugin.
+//////////////////////////////////////////////////////
+
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  role          String?
+  banned        Boolean?
+  banReason     String?
+  banExpires    DateTime?
+
+  sessions Session[]
+  accounts Account[]
+
+  // Custom relations to your business objects:
+  enquiriesAssigned Enquiry[]  @relation("EnquiryAssignedTo")
+  prospectsOwned    Prospect[] @relation("ProspectOwner")
+  dealsOwned        Deal[]     @relation("DealOwner")
+
+  @@map("user")
+}
+
+model Session {
+  id             String   @id
+  expiresAt      DateTime
+  token          String   @unique
+  createdAt      DateTime
+  updatedAt      DateTime
+  ipAddress      String?
+  userAgent      String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy String?
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+//////////////////////////////////////////////////////
+// JWT PLUGIN - JWKS KEY STORE
+//////////////////////////////////////////////////////
+
+model Jwks {
+  id         String   @id
+  publicKey  String
+  privateKey String
+  createdAt  DateTime
+  expiresAt  DateTime?
+
+  @@map("jwks")
+}
+
+//////////////////////////////////////////////////////
+// CONFIGURABLE STATUS SYSTEM (NO ENUMS)
+//////////////////////////////////////////////////////
+
+model ModuleStatus {
+  id        String  @id @default(uuid())
+  module    String // ENQUIRY, PROSPECT, DEAL, ITINERARY, QUOTATION, INVOICE
+  name      String
+  color     String?
+  sortOrder Int
+  isFinal   Boolean @default(false)
+  isActive  Boolean @default(true)
+
+  createdAt   DateTime    @default(now())
+  enquiries   Enquiry[]
+  prospects   Prospect[]
+  deals       Deal[]
+  itineraries Itinerary[]
+  quotations  Quotation[]
+  invoices    Invoice[]
+
+  @@unique([module, name])
+  @@index([module])
+}
+
+//////////////////////////////////////////////////////
+// LEAD SOURCES
+//////////////////////////////////////////////////////
+
+model LeadSource {
+  id   String @id @default(uuid())
+  type String // WEB, FACEBOOK, INSTAGRAM, GOOGLE, MANUAL, BULK
+  name String
+
+  createdAt DateTime  @default(now())
+  enquiries Enquiry[]
+}
+
+//////////////////////////////////////////////////////
+// ENQUIRY (RAW LEAD)
+//////////////////////////////////////////////////////
+
+model Enquiry {
+  id          String  @id @default(uuid())
+  name        String
+  email       String?
+  phone       String
+  destination String?
+  budget      Float?
+
+  statusId String
+  status   ModuleStatus @relation(fields: [statusId], references: [id])
+
+  sourceId String
+  source   LeadSource @relation(fields: [sourceId], references: [id])
+
+  assignedToId String?
+  assignedTo   User?   @relation("EnquiryAssignedTo", fields: [assignedToId], references: [id])
+
+  createdAt DateTime  @default(now())
+  prospect  Prospect?
+}
+
+//////////////////////////////////////////////////////
+// PROSPECT (QUALIFIED LEAD)
+//////////////////////////////////////////////////////
+
+model Prospect {
+  id String @id @default(uuid())
+
+  enquiryId String  @unique
+  enquiry   Enquiry @relation(fields: [enquiryId], references: [id])
+
+  ownerId String
+  owner   User   @relation("ProspectOwner", fields: [ownerId], references: [id])
+
+  statusId String
+  status   ModuleStatus @relation(fields: [statusId], references: [id])
+
+  createdAt   DateTime    @default(now())
+  deals       Deal[]
+  itineraries Itinerary[]
+  quotations  Quotation[]
+}
+
+//////////////////////////////////////////////////////
+// DEAL (SALES PIPELINE)
+//////////////////////////////////////////////////////
+
+model Deal {
+  id String @id @default(uuid())
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id])
+
+  statusId String
+  status   ModuleStatus @relation(fields: [statusId], references: [id])
+
+  expectedValue     Float
+  probability       Int // 0–100
+  expectedCloseDate DateTime
+
+  ownerId String
+  owner   User   @relation("DealOwner", fields: [ownerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([expectedCloseDate])
+}
+
+//////////////////////////////////////////////////////
+// CUSTOMER
+//////////////////////////////////////////////////////
+
+model Customer {
+  id    String  @id @default(uuid())
+  name  String
+  email String?
+  phone String
+
+  source      String // ENQUIRY | PROSPECT | DIRECT
+  sourceRefId String
+
+  createdAt DateTime  @default(now())
+  invoices  Invoice[]
+}
+
+//////////////////////////////////////////////////////
+// DOCUMENT TEMPLATES
+//////////////////////////////////////////////////////
+
+model DocumentTemplate {
+  id          String @id @default(uuid())
+  name        String // Singapore Template
+  destination String
+  type        String // ITINERARY | QUOTATION
+
+  htmlTemplate String
+  isActive     Boolean @default(true)
+
+  createdAt DateTime @default(now())
+}
+
+//////////////////////////////////////////////////////
+// PACKAGES
+//////////////////////////////////////////////////////
+
+model Package {
+  id          String @id @default(uuid())
+  destination String
+  name        String
+  duration    Int
+  price       Float
+
+  hotelDetails Json
+  dayWisePlan  Json
+  inclusions   Json
+  exclusions   Json
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+//////////////////////////////////////////////////////
+// ITINERARY (SNAPSHOT)
+//////////////////////////////////////////////////////
+
+model Itinerary {
+  id String @id @default(uuid())
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id])
+
+  templateId String
+  packageId  String
+
+  snapshotData Json
+  pdfUrl       String?
+
+  statusId String
+  status   ModuleStatus @relation(fields: [statusId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+//////////////////////////////////////////////////////
+// QUOTATION (SNAPSHOT)
+//////////////////////////////////////////////////////
+
+model Quotation {
+  id String @id @default(uuid())
+
+  prospectId String
+  prospect   Prospect @relation(fields: [prospectId], references: [id])
+
+  templateId String
+  packageId  String?
+
+  amount       Float
+  snapshotData Json
+  pdfUrl       String?
+
+  statusId String
+  status   ModuleStatus @relation(fields: [statusId], references: [id])
+
+  createdAt DateTime  @default(now())
+  invoices  Invoice[]
+}
+
+//////////////////////////////////////////////////////
+// INVOICE
+//////////////////////////////////////////////////////
+
+model Invoice {
+  id String @id @default(uuid())
+
+  quotationId String
+  quotation   Quotation @relation(fields: [quotationId], references: [id])
+
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+
+  amount Float
+
+  statusId String
+  status   ModuleStatus @relation(fields: [statusId], references: [id])
+
+  createdAt DateTime  @default(now())
+  payments  Payment[]
+}
+
+//////////////////////////////////////////////////////
+// PAYMENTS (INCOME)
+//////////////////////////////////////////////////////
+
+model Payment {
+  id        String  @id @default(uuid())
+  invoiceId String
+  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+
+  amount Float
+  paidAt DateTime?
+
+  createdAt DateTime @default(now())
+}
+
+//////////////////////////////////////////////////////
+// EXPENSES
+//////////////////////////////////////////////////////
+
+model Expense {
+  id       String   @id @default(uuid())
+  category String
+  amount   Float
+  notes    String?
+  spentAt  DateTime
+
+  createdAt DateTime @default(now())
+}
+
+//////////////////////////////////////////////////////
+// AUTOMATION
+//////////////////////////////////////////////////////
+
+model AutomationRule {
+  id       String  @id @default(uuid())
+  trigger  String // enquiry_created, status_changed
+  channel  String // EMAIL, WHATSAPP, SMS, PUSH
+  template String
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+}
+
+model AutomationLog {
+  id          String  @id @default(uuid())
+  ruleId      String
+  referenceId String
+  success     Boolean
+
+  createdAt DateTime @default(now())
+}
+
+//////////////////////////////////////////////////////
+// DASHBOARD SNAPSHOT (OPTIONAL CACHE)
+//////////////////////////////////////////////////////
+
+model ReportSnapshot {
+  id              String @id @default(uuid())
+  month           String // YYYY-MM
+  targetRevenue   Float
+  achievedRevenue Float
+  pipelineValue   Float
+
+  createdAt DateTime @default(now())
+}

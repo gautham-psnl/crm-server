@@ -1,0 +1,7 @@
+tunnel: crm-webhook
+credentials-file: C:\Users\gauth\.cloudflared\crm-webhook.json
+
+ingress:
+  - hostname: crm-webhook.your-domain.com   # replace after `cloudflared tunnel route dns`
+    service: http://localhost:3000
+  - service: http_status:404
