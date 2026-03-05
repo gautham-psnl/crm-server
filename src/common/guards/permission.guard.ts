@@ -19,12 +19,14 @@ interface JwtPayload {
 }
 
 // ─── Remote JWKS (cached by jose automatically) ───────────────────────────────
-const BETTER_AUTH_URL =
-    process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
+const BETTER_AUTH_URL = (process.env.BETTER_AUTH_URL && process.env.BETTER_AUTH_URL !== '')
+    ? process.env.BETTER_AUTH_URL
+    : "http://localhost:3000";
 
-const JWKS = createRemoteJWKSet(
-    new URL(`${BETTER_AUTH_URL}/api/auth/jwks`)
-);
+// Ensure URL doesn't have double slashes if BETTER_AUTH_URL ends with /
+const jwksUrl = new URL('/api/auth/jwks', BETTER_AUTH_URL.endsWith('/') ? BETTER_AUTH_URL : `${BETTER_AUTH_URL}/`);
+
+const JWKS = createRemoteJWKSet(jwksUrl);
 
 // ─── Guard ─────────────────────────────────────────────────────────────────────
 
